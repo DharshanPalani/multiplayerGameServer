@@ -69,6 +69,30 @@ webSocketServer.on("connection", (clientConnection) => {
         getClient(clientConnection);
         break;
 
+      case "draw":
+        if (clientConnection.currentRoom) {
+          const roomClients = roomMap.get(clientConnection.currentRoom);
+          for (const client of roomClients) {
+            if (
+              client !== clientConnection &&
+              client.readyState === WebSocket.OPEN
+            ) {
+              client.send(
+                JSON.stringify({
+                  type: "draw",
+                  x0: parsedData.x0,
+                  y0: parsedData.y0,
+                  x1: parsedData.x1,
+                  y1: parsedData.y1,
+                  color: parsedData.color,
+                  size: parsedData.size,
+                })
+              );
+            }
+          }
+        }
+        break;
+
       default:
         console.log(
           `Received unknown message type from ${
