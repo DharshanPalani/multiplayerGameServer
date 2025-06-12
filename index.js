@@ -52,11 +52,16 @@ webSocketServer.on("connection", (clientConnection) => {
 
       case "chat":
         const guessedWord = checkMessage(parsedData.message);
-        broadcastMessageToRoom(
-          clientConnection,
-          parsedData.message,
-          guessedWord
-        );
+        if (!clientConnection.hasGuessedWord) {
+          broadcastMessageToRoom(
+            clientConnection,
+            parsedData.message,
+            guessedWord
+          );
+        }
+        if (guessedWord && !clientConnection.hasGuessedWord) {
+          clientConnection.hasGuessedWord = true;
+        }
         break;
 
       default:
