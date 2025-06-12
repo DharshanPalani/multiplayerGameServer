@@ -6,6 +6,7 @@ import assignUsername from "./assignUsername.js";
 import joinRoom from "./join_room.js";
 import removeClientFromCurrentRoom from "./removeClientFromCurrentRoom.js";
 import broadcastMessageToRoom from "./broadcastMessageToRoom.js";
+import checkMessage from "./modules/checkMessage.ts";
 
 const expressApplication = express();
 const httpServer = http.createServer(expressApplication);
@@ -42,15 +43,20 @@ webSocketServer.on("connection", (clientConnection) => {
         break;
 
       case "create_room":
-        joinRoom(clientConnection, parsedData.room, roomMap, true);
+        joinRoom(clientConnection, parsedData.room, true);
         break;
 
       case "join_room":
-        joinRoom(clientConnection, parsedData.room, roomMap, false);
+        joinRoom(clientConnection, parsedData.room, false);
         break;
 
       case "chat":
-        broadcastMessageToRoom(clientConnection, parsedData.message, roomMap);
+        const guessedWord = checkMessage(parsedData.message);
+        broadcastMessageToRoom(
+          clientConnection,
+          parsedData.message,
+          guessedWord
+        );
         break;
 
       default:
