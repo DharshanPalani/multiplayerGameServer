@@ -7,6 +7,7 @@ import joinRoom from "./join_room.js";
 import removeClientFromCurrentRoom from "./removeClientFromCurrentRoom.js";
 import broadcastMessageToRoom from "./broadcastMessageToRoom.js";
 import checkMessage from "./modules/checkMessage.ts";
+import getClient from "./getClientFromRoom.ts";
 
 const expressApplication = express();
 const httpServer = http.createServer(expressApplication);
@@ -62,6 +63,10 @@ webSocketServer.on("connection", (clientConnection) => {
         if (guessedWord && !clientConnection.hasGuessedWord) {
           clientConnection.hasGuessedWord = true;
         }
+        break;
+
+      case "get_clients":
+        getClient(clientConnection);
         break;
 
       default:
