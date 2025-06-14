@@ -24,7 +24,10 @@ const startGame = (clientConnection) => {
 
   const assignArtistMessage = {
     type: "assign_artist",
+    word: "Rizz",
   };
+
+  console.log("Choosen artist is :" + chosenClient.username);
 
   chosenClient.send(JSON.stringify(assignArtistMessage));
 };
