@@ -10,6 +10,8 @@ import checkMessage from "./modules/checkMessage.ts";
 import getClient from "./modules/getClientFromRoom.ts";
 
 import { roomMap } from "./room.ts";
+import assignArtist from "./modules/assignArtist.ts";
+import startGame from "./modules/startGame.ts";
 
 const expressApplication = express();
 const httpServer = http.createServer(expressApplication);
@@ -27,6 +29,7 @@ expressApplication.get("/", (request, response) => {
 webSocketServer.on("connection", (clientConnection) => {
   clientConnection.username = null;
   clientConnection.currentRoom = null;
+  clientConnection.isArtiest = false;
 
   clientConnection.on("message", (incomingMessage) => {
     let parsedData;
@@ -68,6 +71,10 @@ webSocketServer.on("connection", (clientConnection) => {
 
       case "get_clients":
         getClient(clientConnection);
+        break;
+
+      case "request_start":
+        startGame(clientConnection);
         break;
       case "draw":
         if (clientConnection.currentRoom) {
