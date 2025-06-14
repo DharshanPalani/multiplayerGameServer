@@ -1,4 +1,4 @@
-import { roomMap } from "./index.js";
+import { roomMap } from "../room.ts";
 
 const removeClientFromCurrentRoom = (clientConnection) => {
   const currentRoom = clientConnection.currentRoom;

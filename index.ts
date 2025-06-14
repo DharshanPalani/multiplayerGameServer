@@ -2,18 +2,19 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import { WebSocketServer, WebSocket } from "ws";
-import assignUsername from "./assignUsername.js";
-import joinRoom from "./join_room.js";
-import removeClientFromCurrentRoom from "./removeClientFromCurrentRoom.js";
-import broadcastMessageToRoom from "./broadcastMessageToRoom.js";
+import assignUsername from "./modules/assignUsername.ts";
+import joinRoom from "./modules/join_room.ts";
+import removeClientFromCurrentRoom from "./modules/removeClientFromCurrentRoom.ts";
+import broadcastMessageToRoom from "./modules/broadcastMessageToRoom.ts";
 import checkMessage from "./modules/checkMessage.ts";
-import getClient from "./getClientFromRoom.ts";
+import getClient from "./modules/getClientFromRoom.ts";
+
+import { roomMap } from "./room.ts";
 
 const expressApplication = express();
 const httpServer = http.createServer(expressApplication);
 const SERVER_PORT = 3000;
 
-export const roomMap = new Map();
 const webSocketServer = new WebSocketServer({ server: httpServer });
 
 expressApplication.use(cors());
@@ -68,11 +69,11 @@ webSocketServer.on("connection", (clientConnection) => {
       case "get_clients":
         getClient(clientConnection);
         break;
-
       case "draw":
         if (clientConnection.currentRoom) {
           const roomClients = roomMap.get(clientConnection.currentRoom);
           for (const client of roomClients) {
+            console.log(parsedData);
             if (
               client !== clientConnection &&
               client.readyState === WebSocket.OPEN
@@ -108,7 +109,7 @@ webSocketServer.on("connection", (clientConnection) => {
     console.log(
       `Client disconnected: ${clientConnection.username || "unknown"}`
     );
-    removeClientFromCurrentRoom(clientConnection, roomMap);
+    removeClientFromCurrentRoom(clientConnection);
   });
 });
 

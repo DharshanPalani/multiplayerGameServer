@@ -1,4 +1,4 @@
-import { roomMap } from "./index.js";
+import { roomMap } from "../room.ts";
 
 const broadcastMessageToRoom = (clientConnection, messageText, guessedWord) => {
   const currentRoom = clientConnection.currentRoom;

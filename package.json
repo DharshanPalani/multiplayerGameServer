@@ -2,10 +2,10 @@
   "name": "chatsocketbackend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node index.js"
+    "server": "node index.ts"
   },
   "keywords": [],
   "author": "",

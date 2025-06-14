@@ -1,10 +1,10 @@
-import removeClientFromCurrentRoom from "./removeClientFromCurrentRoom.js";
-import { roomMap } from "./index.js";
+import removeClientFromCurrentRoom from "./removeClientFromCurrentRoom.ts";
+import { roomMap } from "../room.ts";
 
 const joinRoom = (clientConnection, roomName, isCreatingRoom = false) => {
   if (!roomName) return;
 
-  removeClientFromCurrentRoom(clientConnection, roomMap);
+  removeClientFromCurrentRoom(clientConnection);
 
   if (!roomMap.has(roomName)) {
     if (!isCreatingRoom) return;
